@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!-- Header -->
 <div class="header">
 			<div class="main-header">
@@ -26,76 +31,6 @@
 							<a id="toggle_btn" href="javascript:void(0);" class="btn btn-menubar me-1">
 								<i class="ti ti-arrow-bar-to-left"></i>
 							</a>
-							<!-- Search -->
-							<div class="input-group input-group-flat d-inline-flex me-1">
-								<span class="input-icon-addon">
-									<i class="ti ti-search"></i>
-								</span>
-								<input type="text" class="form-control" placeholder="Search...">
-								<span class="input-group-text">
-									<kbd>CTRL + / </kbd>
-								</span>
-							</div>
-							<!-- /Search -->
-							<!--<div class="dropdown crm-dropdown">
-								<a href="#" class="btn btn-menubar me-1" data-bs-toggle="dropdown">
-									<i class="ti ti-layout-grid"></i>
-								</a>
-								<div class="dropdown-menu dropdown-lg dropdown-menu-start">
-									<div class="card mb-0 border-0 shadow-none">
-										<div class="card-header">
-											<h4>CRM</h4>
-										</div>
-										<div class="card-body pb-1">		
-											<div class="row">
-												<div class="col-sm-6">							
-													<a href="contacts.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-user-shield text-default me-2"></i>Contacts
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>							
-													<a href="deals-grid.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-heart-handshake text-default me-2"></i>Deals
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>								
-													<a href="pipeline.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-timeline-event-text text-default me-2"></i>Pipeline
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>		
-												</div>
-												<div class="col-sm-6">							
-													<a href="companies-grid.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-building text-default me-2"></i>Companies
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>								
-													<a href="leads-grid.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-user-check text-default me-2"></i>Leads
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>								
-													<a href="activity.php" class="d-flex align-items-center justify-content-between p-2 crm-link mb-3">
-														<span class="d-flex align-items-center me-3">
-															<i class="ti ti-activity text-default me-2"></i>Activities
-														</span>
-														<i class="ti ti-arrow-right"></i>
-													</a>		
-												</div>
-											</div>		
-										</div>
-									</div>
-								</div>
-							</div>
-							<a href="profile-settings.php" class="btn btn-menubar">
-								<i class="ti ti-settings-cog"></i>
-							</a>	-->
 							<i class="ti ti-calendar me-1"></i><?php echo date('l, d-m-Y'); ?> | &nbsp;
 							<i class="ti ti-dashboard me-1"></i>
 							<?php
@@ -1200,8 +1135,8 @@
 													<img src="assets/img/users/user1.png" alt="img">
 												</span>
 												<div>
-													<h5 class="mb-0">dimasaw</h5>
-													<p class="fs-12 fw-medium mb-0">daw@email.com</p>
+													<h5 class="mb-0"><?php echo htmlspecialchars($_SESSION['username']); ?></h5>
+													<p class="fs-12 fw-medium mb-0"><?php echo htmlspecialchars($_SESSION['email']); ?></p>
 												</div>
 											</div>
 										</div>
