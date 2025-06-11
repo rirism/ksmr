@@ -173,8 +173,8 @@ $totalDealerUtama = $row['total'];
 														data-bs-target="#edit_assets">
 														<i class="ti ti-edit"></i>
 													</a>
-													<a href="javascript:void(0);" data-bs-toggle="modal"
-														data-bs-target="#delete_modal">
+													<a href="#" class="btn-delete" data-bs-toggle="modal"
+														data-bs-target="#delete_modal" data-kode="<?= $row['kode_bank'] ?>">
 														<i class="ti ti-trash"></i>
 													</a>
 												</div>
@@ -208,48 +208,28 @@ $totalDealerUtama = $row['total'];
 							<i class="ti ti-x"></i>
 						</button>
 					</div>
-					<form action="assets.php">
+					<form action="bank_add.php" method="POST">
 						<div class="modal-body pb-0">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="mb-3">
 										<label class="form-label">Kode Bank</label>
-										<input type="text" class="form-control">
+										<input type="text" class="form-control" name="kode_bank" required>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="mb-3">
 										<label class="form-label">Nama Bank</label>
-										<input type="text" class="form-control">
+										<input type="text" class="form-control" name="nama_bank" required>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="mb-3">
 										<label class="form-label">Dealer Utama</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Ya</option>
-											<option>Tidak</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="mb-3 ">
-										<label class="form-label">30 Bank Besar</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Ya</option>
-											<option>Tidak</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="mb-3 ">
-										<label class="form-label">Status</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Aktif</option>
-											<option>Tidak Aktif</option>
+										<select class="form-select" name="dealer_utama" required>
+											<option value="">Pilih</option>
+											<option value="1">Ya</option>
+											<option value="0">Tidak</option>
 										</select>
 									</div>
 								</div>
@@ -346,7 +326,7 @@ $totalDealerUtama = $row['total'];
 							dikembalikan.</p>
 						<div class="d-flex justify-content-center">
 							<a href="javascript:void(0);" class="btn btn-light me-3" data-bs-dismiss="modal">Batal</a>
-							<a href="jabatan.php" class="btn btn-danger">Ya, Hapus</a>
+							<a id="confirmDeleteBtn" href="#" class="btn btn-danger">Ya, Hapus</a>
 						</div>
 					</div>
 				</div>
@@ -361,6 +341,16 @@ $totalDealerUtama = $row['total'];
 	<!-- end main wrapper-->
 	<!-- JAVASCRIPT -->
 	<?php include 'layouts/vendor-scripts.php'; ?>
+	<script>
+		const deleteModal = document.getElementById('delete_modal');
+		const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+		deleteModal.addEventListener('show.bs.modal', function (event) {
+			const button = event.relatedTarget;
+			const kodeBank = button.getAttribute('data-kode');
+			confirmBtn.href = 'bank_delete.php?kode_bank=' + encodeURIComponent(kodeBank);
+		});
+	</script>
 </body>
 
 </html>
