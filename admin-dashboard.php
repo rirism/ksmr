@@ -1,12 +1,31 @@
+<?php
+session_start();
+
+// Blok cache browser supaya tombol Back tidak bisa akses halaman lama
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Cek apakah user sudah login
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <?php include 'layouts/session.php'; ?>
 <?php include 'layouts/head-main.php'; ?>
 <head>
-<title>Sistem Informasi Pengawasan Treasuri/Market</title>
- <?php include 'layouts/title-meta.php'; ?>
- <?php include 'layouts/head-css.php'; 
- 
-
-?>
+    <title>Sistem Informasi Pengawasan Treasuri/Market</title>
+    <?php 
+    include 'layouts/title-meta.php'; 
+    include 'layouts/head-css.php'; 
+    ?>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
 </head>
 <body>
 <div id="global-loader">
@@ -75,8 +94,12 @@
 								<img src="assets/img/users/user.png" class="rounded-circle" alt="img">
 							</span>
 							<div class="ms-3">
-								<h3 class="mb-2">Selamat datang, dimasaw! </h3>
-								<p>Kamu memiliki <span class="text-primary text-decoration-underline">21</span> Laporan Perubahan & <span class="text-primary text-decoration-underline">14</span> Laporan Harian yang tertunda.</p>
+								<h3 class="mb-2">Selamat datang, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h3>
+								<p>
+									Kamu memiliki 
+									<span class="text-primary text-decoration-underline">21</span> Laporan Perubahan & 
+									<span class="text-primary text-decoration-underline">14</span> Laporan Harian yang tertunda.
+								</p>
 							</div>
 						</div>
 						<div class="d-flex align-items-center flex-wrap mb-1">
