@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 						<img src="assets/img/BI/dsmm-trans.png" alt="Logo">
 					</a>
 					<a href="admin-dashboard.php" class="dark-logo">
-						<img src="assets/img/BI/dsmm-trans.png alt="Logo">
+						<img src="assets/img/BI/dsmm-trans.png" alt="Logo">
 					</a>
 				</div>
 
@@ -36,7 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
 							<?php
 								date_default_timezone_set("Asia/jakarta");
 							?>
-							<b><span id="jam" style="font-size:24"></span></b></p>
+							<b><span id="jam" style="font-size:14"></span></b></p>
 							
 							<script type="text/javascript">
 								window.onload = function() { jam(); }
