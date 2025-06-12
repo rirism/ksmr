@@ -138,7 +138,7 @@ $totalDealerUtama = $row['total'];
 										</th>
 										<th>Kode Bank</th>
 										<th>Nama Bank</th>
-										<th>Dealer Utama</th>
+										<th>Status DU</th>
 										<th>30 Bank Besar</th>
 										<th>Action</th>
 									</tr>
