@@ -139,22 +139,27 @@ $totalDealerUtama = $row['total'];
 										<th>Kode Bank</th>
 										<th>Nama Bank</th>
 										<th>Status DU</th>
-										<!-- <th>30 Bank Besar</th> -->
 										<th class="no-sort">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php while ($row = mysqli_fetch_assoc($listbank)): ?>
+									<?php
+									mysqli_data_seek($listbank, 0); // Reset pointer
+									while ($row = mysqli_fetch_assoc($listbank)):
+										$kode = htmlspecialchars($row['kode_bank']);
+										$nama = htmlspecialchars($row['nama_bank']);
+										$dealer_utama = $row['isdealerutama'];
+										?>
 										<tr>
 											<td>
 												<div class="form-check form-check-md">
 													<input class="form-check-input" type="checkbox">
 												</div>
 											</td>
-											<td><?= htmlspecialchars($row['kode_bank']) ?></td>
-											<td><?= htmlspecialchars($row['nama_bank']) ?></td>
+											<td><?= $kode ?></td>
+											<td><?= $nama ?></td>
 											<td>
-												<?php if ($row['isdealerutama'] == 1): ?>
+												<?php if ($dealer_utama == 1): ?>
 													<span class="badge badge-success d-inline-flex align-items-center badge-xs">
 														Dealer Utama
 													</span>
@@ -165,16 +170,14 @@ $totalDealerUtama = $row['total'];
 													</span>
 												<?php endif; ?>
 											</td>
-											<!-- <td><?= htmlspecialchars($row['bank30besar'] ?? '-') ?></td> -->
-											<!-- Jika kolom bank30besar tersedia -->
 											<td>
 												<div class="action-icon d-inline-flex">
 													<a href="#" class="me-2" data-bs-toggle="modal"
-														data-bs-target="#edit_assets">
+														data-bs-target="#edit_assets<?= $kode ?>">
 														<i class="ti ti-edit"></i>
 													</a>
 													<a href="#" class="btn-delete" data-bs-toggle="modal"
-														data-bs-target="#delete_modal" data-kode="<?= $row['kode_bank'] ?>">
+														data-bs-target="#delete_modal" data-kode="<?= $kode ?>">
 														<i class="ti ti-trash"></i>
 													</a>
 												</div>
@@ -183,10 +186,69 @@ $totalDealerUtama = $row['total'];
 									<?php endwhile; ?>
 								</tbody>
 							</table>
+							<?php
+							mysqli_data_seek($listbank, 0); // ulang lagi dari awal
+							while ($row = mysqli_fetch_assoc($listbank)):
+								$kode = htmlspecialchars($row['kode_bank']);
+								$nama = htmlspecialchars($row['nama_bank']);
+								$dealer_utama = $row['isdealerutama'];
+								?>
+								<div class="modal fade" id="edit_assets<?= $kode ?>" tabindex="-1">
+									<div class="modal-dialog modal-dialog-centered modal-lg">
+										<form action="bank_edit.php" method="POST" class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">Edit Data Bank</h4>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close">
+													<i class="ti ti-x"></i>
+												</button>
+											</div>
+											<div class="modal-body pb-3">
+												<div class="row">
+													<input type="hidden" name="kode_bank" value="<?= $kode ?>">
+
+													<div class="col-md-6">
+														<div class="mb-3">
+															<label class="form-label">Kode Bank</label>
+															<input type="text" class="form-control" value="<?= $kode ?>"
+																disabled>
+														</div>
+													</div>
+
+													<div class="col-md-6">
+														<div class="mb-3">
+															<label class="form-label">Nama Bank</label>
+															<input type="text" class="form-control" name="nama_bank"
+																value="<?= $nama ?>" required>
+														</div>
+													</div>
+
+													<div class="col-md-12">
+														<div class="mb-3">
+															<label class="form-label">Dealer Utama</label>
+															<select class="form-select" name="dealer_utama" required>
+																<option value="">Pilih</option>
+																<option value="1" <?= $dealer_utama == 1 ? 'selected' : '' ?>>
+																	Ya</option>
+																<option value="0" <?= $dealer_utama == 0 ? 'selected' : '' ?>>
+																	Tidak</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-light me-2"
+													data-bs-dismiss="modal">Batal</button>
+												<button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							<?php endwhile; ?>
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<div class="footer d-sm-flex align-items-center justify-content-between border-top bg-white p-3">
