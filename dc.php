@@ -7,6 +7,11 @@
     include 'layouts/title-meta.php';
     include 'layouts/head-css.php';
     include('layouts/config.php');
+    $bankQuery = mysqli_query($link, "SELECT kode_bank, nama_bank FROM bank ORDER BY nama_bank");
+    $bankList = [];
+    while ($row = mysqli_fetch_assoc($bankQuery)) {
+        $bankList[] = $row;
+    }
 
     $query = "
         SELECT 
@@ -291,66 +296,80 @@
         <!-- /Page Wrapper -->
 
         <!-- Tambah Bank -->
-        <div class="modal fade" id="add_assets">
+        <!-- Modal -->
+        <div class="modal fade" id="add_assets" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Tambah Bank</h4>
-                        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal"
-                            aria-label="Close">
-                            <i class="ti ti-x"></i>
-                        </button>
-                    </div>
-                    <form action="assets.php">
-                        <div class="modal-body pb-0">
-                            <div class="row">
+                    <form action="dc_add.php" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Tambah Bank</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <!-- Kode Bank -->
                                 <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Kode Bank</label>
-                                        <input type="text" class="form-control">
-                                    </div>
+                                    <label class="form-label">Kode Bank</label>
+                                    <select id="kode_bank" name="kode_bank" class="form-select select2">
+                                        <option value="">Pilih Kode Bank</option>
+                                        <?php foreach ($bankList as $bank): ?>
+                                            <option value="<?= $bank['kode_bank'] ?>"><?= $bank['kode_bank'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
+
+                                <!-- Nama Bank -->
                                 <div class="col-md-6">
+                                    <label class="form-label">Nama Bank</label>
+                                    <select id="nama_bank" class="form-select select2">
+                                        <option value="" s>Pilih Nama Bank</option>
+                                        <?php foreach ($bankList as $bank): ?>
+                                            <option value="<?= $bank['kode_bank'] ?>"><?= $bank['nama_bank'] ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Kepemilikan DC</label>
+                                    <select class="form-select" name="dc_status">
+                                        <option value="">Pilih</option>
+                                        <option>
+                                            Milik Sendiri</option>
+                                        <option>
+                                            Colocation</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label">Nama Bank</label>
-                                        <input type="text" class="form-control">
+                                        <label class="form-label">Tier DC</label>
+                                        <select class="form-select" name="dc_tier">
+                                            <option value="">Pilih</option>
+                                            <option>Tier 1
+                                            </option>
+                                            <option>Tier 2
+                                            </option>
+                                            <option>Tier 3
+                                            </option>
+                                            <option>Tier 4
+                                            </option>
+                                            <option>Belum
+                                                Sertifikasi Tier</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label class="form-label">Dealer Utama</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Ya</option>
-                                            <option>Tidak</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 ">
-                                        <label class="form-label">30 Bank Besar</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Ya</option>
-                                            <option>Tidak</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 ">
-                                        <label class="form-label">Status</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Aktif</option>
-                                            <option>Tidak Aktif</option>
-                                        </select>
+                                        <label class="form-label">Lokasi DC</label>
+                                        <input type="text" class="form-control" name="dc_lokasi" placeholder="...">
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Tambah</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </div>
                     </form>
                 </div>
@@ -359,23 +378,22 @@
         <!-- /Tambah Bank -->
 
         <!-- Delete Modal -->
-            <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content text-center">
-                        <div class="modal-body">
-                            <span class="avatar avatar-xl bg-transparent-danger text-danger mb-3">
-                                <i class="ti ti-trash-x fs-36"></i>
-                            </span>
-                            <h4 class="mb-1">Konfirmasi Hapus</h4>
-                            <p>Apakah Anda yakin ingin menghapus data ini?</p>
-                            <a id="confirmDeleteBtn" class="btn btn-danger">Ya, Hapus</a>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        </div>
+        <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center">
+                    <div class="modal-body">
+                        <span class="avatar avatar-xl bg-transparent-danger text-danger mb-3">
+                            <i class="ti ti-trash-x fs-36"></i>
+                        </span>
+                        <h4 class="mb-1">Konfirmasi Hapus</h4>
+                        <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                        <a id="confirmDeleteBtn" class="btn btn-danger">Ya, Hapus</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </div>
             </div>
-            <!-- /Delete Modal -->
+        </div>
+        <!-- /Delete Modal -->
 
 
 
@@ -392,6 +410,24 @@
             const button = event.relatedTarget;
             const kodeBank = button.getAttribute('data-kode');
             confirmBtn.href = 'dc_delete.php?kode_bank=' + encodeURIComponent(kodeBank);
+        });
+    </script>
+    <!-- Script Select2 dan sinkronisasi -->
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                dropdownParent: $('#add_assets'),
+                placeholder: "Cari..."
+            });
+
+            // Sinkronisasi
+            $('#kode_bank').on('change', function () {
+                $('#nama_bank').val($(this).val()).trigger('change');
+            });
+
+            $('#nama_bank').on('change', function () {
+                $('#kode_bank').val($(this).val()).trigger('change');
+            });
         });
     </script>
 </body>
