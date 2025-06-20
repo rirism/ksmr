@@ -178,7 +178,7 @@
                                                     <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#edit_assets' . $row['kode_bank'] . '">
                                                         <i class="ti ti-edit"></i>
                                                     </a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal" data-kode="' . $row['kode_bank'] . '">
                                                         <i class="ti ti-trash"></i>
                                                     </a>
                                                 </div>
@@ -360,20 +360,17 @@
         <!-- /Tambah Bank -->
 
         <!-- Delete Modal -->
-        <div class="modal fade" id="delete_modal">
+        <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body text-center">
+                <div class="modal-content text-center">
+                    <div class="modal-body">
                         <span class="avatar avatar-xl bg-transparent-danger text-danger mb-3">
                             <i class="ti ti-trash-x fs-36"></i>
                         </span>
                         <h4 class="mb-1">Konfirmasi Hapus</h4>
-                        <p class="mb-3">Kamu akan menghapus bank ini, apabila sudah dihapus tidak akan bisa
-                            dikembalikan.</p>
-                        <div class="d-flex justify-content-center">
-                            <a href="javascript:void(0);" class="btn btn-light me-3" data-bs-dismiss="modal">Batal</a>
-                            <a href="jabatan.php" class="btn btn-danger">Ya, Hapus</a>
-                        </div>
+                        <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                        <a id="confirmDeleteBtn" class="btn btn-danger">Ya, Hapus</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </div>
             </div>
@@ -387,6 +384,16 @@
     <!-- end main wrapper-->
     <!-- JAVASCRIPT -->
     <?php include 'layouts/vendor-scripts.php'; ?>
+    <script>
+        const deleteModal = document.getElementById('delete_modal');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const kodeBank = button.getAttribute('data-kode');
+            confirmBtn.href = 'drc_delete.php?kode_bank=' + encodeURIComponent(kodeBank);
+        });
+    </script>
 </body>
 
 </html>
