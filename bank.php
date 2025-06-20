@@ -139,8 +139,8 @@ $totalDealerUtama = $row['total'];
 										<th>Kode Bank</th>
 										<th>Nama Bank</th>
 										<th>Status DU</th>
-										<th>30 Bank Besar</th>
-										<th>Action</th>
+										<!-- <th>30 Bank Besar</th> -->
+										<th class="no-sort">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -165,7 +165,7 @@ $totalDealerUtama = $row['total'];
 													</span>
 												<?php endif; ?>
 											</td>
-											<td><?= htmlspecialchars($row['bank30besar'] ?? '-') ?></td>
+											<!-- <td><?= htmlspecialchars($row['bank30besar'] ?? '-') ?></td> -->
 											<!-- Jika kolom bank30besar tersedia -->
 											<td>
 												<div class="action-icon d-inline-flex">
@@ -246,69 +246,56 @@ $totalDealerUtama = $row['total'];
 		<!-- /Tambah Bank -->
 
 		<!-- Edit Bank -->
-		<div class="modal fade" id="edit_assets">
+		<div class="modal fade" id="edit_bank<?= $kode_bank ?>" tabindex="-1">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
+				<form action="bank_edit.php" method="POST" class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">Rubah Bank</h4>
-						<button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal"
-							aria-label="Close">
+						<h4 class="modal-title">Edit Data Bank</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 							<i class="ti ti-x"></i>
 						</button>
 					</div>
-					<form action="assets.php">
-						<div class="modal-body pb-0">
-							<div class="row">
-								<div class="col-md-6">
-									<div class="mb-3">
-										<label class="form-label">Kode Bank</label>
-										<input type="text" class="form-control">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="mb-3">
-										<label class="form-label">Nama Bank</label>
-										<input type="text" class="form-control">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="mb-3">
-										<label class="form-label">Dealer Utama</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Ya</option>
-											<option>Tidak</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="mb-3 ">
-										<label class="form-label">30 Bank Besar</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Ya</option>
-											<option>Tidak</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="mb-3 ">
-										<label class="form-label">Status</label>
-										<select class="select">
-											<option>Pilih</option>
-											<option>Aktif</option>
-											<option>Tidak Aktif</option>
-										</select>
-									</div>
+					<div class="modal-body pb-3">
+						<div class="row">
+							<!-- Kode Bank (readonly & hidden for POST) -->
+							<input type="hidden" name="kode_bank" value="<?= htmlspecialchars($kode_bank) ?>">
+
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Kode Bank</label>
+									<input type="text" class="form-control" value="<?= htmlspecialchars($kode_bank) ?>"
+										disabled>
 								</div>
 							</div>
+
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Nama Bank</label>
+									<input type="text" class="form-control" name="nama_bank"
+										value="<?= htmlspecialchars($nama_bank) ?>" required>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Status Dealer Utama</label>
+									<select name="dealer_utama" class="form-select" required>
+										<option value="">Pilih</option>
+										<option value="1" <?= $isdealerutama == 1 ? 'selected' : '' ?>>Dealer Utama
+										</option>
+										<option value="0" <?= $isdealerutama == 0 ? 'selected' : '' ?>>Non Dealer Utama
+										</option>
+									</select>
+								</div>
+							</div>
+
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Batal</button>
-							<button type="submit" class="btn btn-primary">Tambah</button>
-						</div>
-					</form>
-				</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Batal</button>
+						<button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+					</div>
+				</form>
 			</div>
 		</div>
 		<!-- /Edit Bank -->

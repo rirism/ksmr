@@ -10,17 +10,14 @@
 
     $query = "
         SELECT 
-            b.kode_bank, 
-            b.nama_bank,
-            dc.status AS dc_status, 
-            dc.tier AS dc_tier, 
-            dc.lokasi AS dc_lokasi,
-            dr.status AS drc_status, 
-            dr.tier AS drc_tier, 
-            dr.lokasi AS drc_lokasi
+        b.kode_bank, 
+        b.nama_bank,
+        dc.status AS dc_status, 
+        dc.tier AS dc_tier, 
+        dc.lokasi AS dc_lokasi
         FROM bank b
         LEFT JOIN data_center dc ON dc.kode_bank = b.kode_bank
-        LEFT JOIN dr_center dr ON dr.kode_bank = b.kode_bank
+        WHERE dc.kode_bank IS NOT NULL
     ";
 
     $result = mysqli_query($link, $query);
@@ -163,10 +160,7 @@
                                         <th>Kepemilikan DC</th>
                                         <th>Tier DC</th>
                                         <th class="dc-lokasi">Lokasi DC</th>
-                                        <th>Kepemilikan DRC</th>
-                                        <th>Tier DRC</th>
-                                        <th class="drc-lokasi">Lokasi DRC</th>
-                                        <th class=" no-sort">Action</th>
+                                        <th class="no-sort">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -177,14 +171,11 @@
                                         // echo "<td>{$row['kode_bank']}</td>";
                                         echo "<td class='wrap-column nama-bank'>{$row['kode_bank']} - {$row['nama_bank']}</td>";
                                         echo "<td>" . (!empty($row['dc_status']) ? $row['dc_status'] : '-') . "</td>";
-                                        echo "<td>". (!empty($row["dc_tier"]) ? $row['dc_tier'] :'-') . '</td>';
-                                        echo '<td>'. (!empty($row['dc_lokasi']) ? $row['dc_lokasi'] :'-') . '</td>';
-                                        echo '<td>'. (!empty($row['drc_status']) ? $row['drc_status'] :'-') . '</td>';
-                                        echo '<td>'. (!empty($row['drc_tier']) ? $row['drc_tier'] :'-') . '</td>';
-                                        echo '<td>'. (!empty($row['lokasi']) ? $row['drc_lokasi'] :'-') . '</td>';
+                                        echo "<td>" . (!empty($row["dc_tier"]) ? $row['dc_tier'] : '-') . '</td>';
+                                        echo "<td class='wrap-column dc-lokasi'>" . (!empty($row['dc_lokasi']) ? $row['dc_lokasi'] : '-') . "</td>";
                                         echo '<td>
                                                 <div class="action-icon d-inline-flex">
-                                                    <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#edit_assets">
+                                                    <a href="#" class="me-2" data-bs-toggle="modal" data-bs-target="#edit_assets' . $row['kode_bank'] . '">
                                                         <i class="ti ti-edit"></i>
                                                     </a>
                                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
@@ -196,6 +187,96 @@
                                     ?>
                                 </tbody>
                             </table>
+                            <?php
+                            mysqli_data_seek($result, 0); // reset result pointer
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $kode = htmlspecialchars($row['kode_bank']);
+                                $nama = htmlspecialchars($row['nama_bank']);
+                                $dc_status = htmlspecialchars($row['dc_status']);
+                                $dc_tier = htmlspecialchars($row['dc_tier']);
+                                $dc_lokasi = htmlspecialchars($row['dc_lokasi']);
+                                $drc_status = htmlspecialchars($row['drc_status']);
+                                $drc_tier = htmlspecialchars($row['drc_tier']);
+                                $drc_lokasi = htmlspecialchars($row['drc_lokasi']);
+                                ?>
+                                <div class="modal fade" id="edit_assets<?= $kode ?>" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <form action="dc_edit.php" method="POST" class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Data DC/DRC</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <i class="ti ti-x"></i>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body pb-3">
+                                                <div class="row">
+                                                    <input type="hidden" name="kode_bank" value="<?= $kode ?>">
+
+                                                    <!-- Kode & Nama Bank -->
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Kode Bank</label>
+                                                            <input type="text" class="form-control" value="<?= $kode ?>"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Nama Bank</label>
+                                                            <input type="text" class="form-control" value="<?= $nama ?>"
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- DC -->
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Kepemilikan DC</label>
+                                                        <select class="form-select" name="dc_status">
+                                                            <option value="">Pilih</option>
+                                                            <option <?= $dc_status == 'Milik Sendiri' ? 'selected' : '' ?>>
+                                                                Milik Sendiri</option>
+                                                            <option <?= $dc_status == 'Colocation' ? 'selected' : '' ?>>
+                                                                Colocation</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Tier DC</label>
+                                                            <select class="form-select" name="dc_tier">
+                                                                <option value="">Pilih</option>
+                                                                <option <?= $dc_tier == 'Tier 1' ? 'selected' : '' ?>>Tier 1
+                                                                </option>
+                                                                <option <?= $dc_tier == 'Tier 2' ? 'selected' : '' ?>>Tier 2
+                                                                </option>
+                                                                <option <?= $dc_tier == 'Tier 3' ? 'selected' : '' ?>>Tier 3
+                                                                </option>
+                                                                <option <?= $dc_tier == 'Tier 4' ? 'selected' : '' ?>>Tier 4
+                                                                </option>
+                                                                <option <?= $dc_tier == 'Belum Sertifikasi Tier' ? 'selected' : '' ?>>Belum Sertifikasi Tier</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Lokasi DC</label>
+                                                            <input type="text" class="form-control" name="dc_lokasi"
+                                                                value="<?= $dc_lokasi ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light me-2"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -276,74 +357,6 @@
             </div>
         </div>
         <!-- /Tambah Bank -->
-
-        <!-- Edit Bank -->
-        <div class="modal fade" id="edit_assets">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Rubah Bank</h4>
-                        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal"
-                            aria-label="Close">
-                            <i class="ti ti-x"></i>
-                        </button>
-                    </div>
-                    <form action="assets.php">
-                        <div class="modal-body pb-0">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Kode Bank</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nama Bank</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Dealer Utama</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Ya</option>
-                                            <option>Tidak</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 ">
-                                        <label class="form-label">30 Bank Besar</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Ya</option>
-                                            <option>Tidak</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 ">
-                                        <label class="form-label">Status</label>
-                                        <select class="select">
-                                            <option>Pilih</option>
-                                            <option>Aktif</option>
-                                            <option>Tidak Aktif</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- /Edit Bank -->
 
         <!-- Delete Modal -->
         <div class="modal fade" id="delete_modal">

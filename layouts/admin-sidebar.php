@@ -329,8 +329,13 @@ $page = end($link_array);
 									</a>
 								</li>
 								<li>
-									<a href='dc-drc.php'
-										class="<?php echo ($page == 'dc-drc.php') ? 'active' : ''; ?>">DC dan DRC
+									<a href='dc.php'
+										class="<?php echo ($page == 'dc.php') ? 'active' : ''; ?>">DC
+									</a>
+								</li>
+								<li>
+									<a href='drc.php'
+										class="<?php echo ($page == 'drc.php') ? 'active' : ''; ?>">DRC
 									</a>
 								</li>
 								<li>
