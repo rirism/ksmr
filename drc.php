@@ -201,7 +201,7 @@
                                 ?>
                                 <div class="modal fade" id="edit_assets<?= $kode ?>" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <form action="dc-drc_edit.php" method="POST" class="modal-content">
+                                        <form action="drc_edit.php" method="POST" class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title">Edit Data DC/DRC</h4>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -226,42 +226,6 @@
                                                             <label class="form-label">Nama Bank</label>
                                                             <input type="text" class="form-control" value="<?= $nama ?>"
                                                                 disabled>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- DC -->
-                                                    <div class="col-md-4">
-                                                        <label class="form-label">Kepemilikan DC</label>
-                                                        <select class="form-select" name="dc_status">
-                                                            <option value="">Pilih</option>
-                                                            <option <?= $dc_status == 'Milik Sendiri' ? 'selected' : '' ?>>
-                                                                Milik Sendiri</option>
-                                                            <option <?= $dc_status == 'Colocation' ? 'selected' : '' ?>>
-                                                                Colocation</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Tier DC</label>
-                                                            <select class="form-select" name="dc_tier">
-                                                                <option value="">Pilih</option>
-                                                                <option <?= $dc_tier == 'Tier 1' ? 'selected' : '' ?>>Tier 1
-                                                                </option>
-                                                                <option <?= $dc_tier == 'Tier 2' ? 'selected' : '' ?>>Tier 2
-                                                                </option>
-                                                                <option <?= $dc_tier == 'Tier 3' ? 'selected' : '' ?>>Tier 3
-                                                                </option>
-                                                                <option <?= $dc_tier == 'Tier 4' ? 'selected' : '' ?>>Tier 4
-                                                                </option>
-                                                                <option <?= $dc_tier == 'Belum Sertifikasi Tier' ? 'selected' : '' ?>>Belum Sertifikasi Tier</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Lokasi DC</label>
-                                                            <input type="text" class="form-control" name="dc_lokasi"
-                                                                value="<?= $dc_lokasi ?>">
                                                         </div>
                                                     </div>
 
