@@ -358,7 +358,7 @@
         </div>
         <!-- /Tambah Bank -->
 
-        <<!-- Delete Modal -->
+        <!-- Delete Modal -->
             <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
