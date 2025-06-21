@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $query = "
-            INSERT INTO data_center (kode_bank, status, tier, lokasi)
+            INSERT INTO dr_center (kode_bank, status, tier, lokasi)
             VALUES ('$kode_bank', '$drc_status', '$drc_tier', '$drc_lokasi')
         ";
 
