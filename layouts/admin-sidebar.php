@@ -317,7 +317,7 @@ $page = end($link_array);
 						</li>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="<?php echo ($page == 'dealer-utama.php' || $page == 'chart-js.php' || $page == 'chart-morris.php' || $page == 'chart-flot.php' || $page == 'chart-peity.php' || $page == 'chart-c3.php') ? 'subdrop active' : ''; ?>">
+								class="<?php echo ($page == 'data-pokok.php' || $page == 'dc.php' || $page == 'drc.php' || $page == 'aplikasi-tresuri.php') ? 'subdrop active' : ''; ?>">
 								<i class="ti ti-database"></i>
 								<span>Data Pokok TI</span>
 								<span class="menu-arrow"></span>
