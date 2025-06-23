@@ -178,11 +178,41 @@
                                     <?php
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         echo "<tr>";
-                                        // echo '<td><div class="form-check form-check-md"><input class="form-check-input" type="checkbox"></div></td>';
-                                        // echo "<td>{$row['kode_bank']}</td>";
                                         echo "<td class='wrap-column nama-bank'>{$row['kode_bank']} - {$row['nama_bank']}</td>";
-                                        echo "<td>" . (!empty($row['dc_status']) ? $row['dc_status'] : '-') . "</td>";
-                                        echo "<td>" . (!empty($row["dc_tier"]) ? $row['dc_tier'] : '-') . '</td>';
+                                        echo "<td>";
+                                        if ($row['dc_status'] === 'Colocation') {
+                                            echo '<span class="badge bg-success d-inline-flex align-items-center badge-xs">Colocation</span>';
+                                        } elseif ($row['dc_status'] === 'Milik Sendiri') {
+                                            echo '<span class="badge bg-secondary d-inline-flex align-items-center badge-xs">Milik Sendiri</span>';
+                                        } else {
+                                            echo '<span class="badge bg-dark text-light d-inline-flex align-items-center badge-xs">Belum Dikonfirmasi</span>';
+                                        }
+                                        echo "</td>";
+                                        echo "<td>";
+                                        $tier = $row["dc_tier"] ?? '';
+                                        switch ($tier) {
+                                            case 'Tier 1':
+                                                $badgeClass = 'bg-warning';
+                                                break;
+                                            case 'Tier 2':
+                                                $badgeClass = 'bg-primary';
+                                                break;
+                                            case 'Tier 3':
+                                                $badgeClass = 'bg-secondary';
+                                                break;
+                                            case 'Tier 4':
+                                                $badgeClass = 'bg-success';
+                                                break;
+                                            case 'Belum Sertifikasi Tier':
+                                                $badgeClass = 'bg-danger';
+                                                break;
+                                            default:
+                                                $badgeClass = 'bg-dark text-light';
+                                                $tier = 'Belum Dikonfirmasi';
+                                                break;
+                                        }
+                                        echo '<span class="badge ' . $badgeClass . ' d-inline-flex align-items-center badge-xs">' . $tier . '</span>';
+                                        echo "</td>";
                                         echo "<td class='wrap-column dc-lokasi'>" . (!empty($row['dc_lokasi']) ? $row['dc_lokasi'] : '-') . "</td>";
                                         echo '<td>
                                                 <div class="action-icon d-inline-flex">
@@ -265,6 +295,7 @@
                                                                 <option <?= $dc_tier == 'Tier 4' ? 'selected' : '' ?>>Tier 4
                                                                 </option>
                                                                 <option <?= $dc_tier == 'Belum Sertifikasi Tier' ? 'selected' : '' ?>>Belum Sertifikasi Tier</option>
+                                                                <option <?= $dc_tier == 'Belum Dikonfirmasi' ? 'selected' : '' ?>>Belum Dikonfirmasi</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -344,6 +375,8 @@
                                             Milik Sendiri</option>
                                         <option>
                                             Colocation</option>
+                                        <option>
+                                            Belum Dikonfirmasi</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -361,6 +394,8 @@
                                             </option>
                                             <option>Belum
                                                 Sertifikasi Tier</option>
+                                            <option>Belum
+                                                Dikonfirmasi</option>
                                         </select>
                                     </div>
                                 </div>
