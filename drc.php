@@ -130,10 +130,16 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="mb-2">
+                        <div class="me-2 mb-2">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#add_assets"
                                 class="btn btn-primary d-flex align-items-center"><i
                                     class="ti ti-circle-plus me-2"></i>Tambah</a>
+                        </div>
+                        <div class="me-2 mb-2">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#upload_csv_modal"
+                                class="btn btn-outline-secondary d-flex align-items-center">
+                                <i class="ti ti-upload me-2"></i>Upload CSV
+                            </a>
                         </div>
                         <div class="ms-2 head-icons">
                             <a href="javascript:void(0);" class="" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -374,6 +380,32 @@
             </div>
         </div>
         <!-- /Tambah Bank -->
+
+        <!-- Modal Upload CSV -->
+        <div class="modal fade" id="upload_csv_modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <form method="POST" enctype="multipart/form-data" action="drc_upload_csv.php" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload CSV ke Data Recovery Center</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="csv_file" class="form-label">Pilih File CSV</label>
+                            <input type="file" class="form-control" name="csv_file" accept=".csv" required>
+                        </div>
+                        <div class="alert alert-info">
+                            Format kolom: <code>kode_bank,status,tier,lokasi</code>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Upload & Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Modal Upload CSV -->
 
         <!-- Delete Modal -->
         <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
