@@ -7,11 +7,11 @@ if (isset($_SESSION["username"])) {
     $_SESSION = array(); // Hapus semua data sesi
     session_destroy(); // Hancurkan sesi
     // Redirect ke halaman login
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 } else {
     // Jika pengguna belum login, arahkan ke halaman login
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 ?>
