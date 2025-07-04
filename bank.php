@@ -139,6 +139,7 @@ $totalDealerUtama = $row['total'];
 										<th>Kode Bank</th>
 										<th>Nama Bank</th>
 										<th>Status DU</th>
+										<th>Status Bank Besar</th>
 										<th class="no-sort">Action</th>
 									</tr>
 								</thead>
@@ -149,6 +150,7 @@ $totalDealerUtama = $row['total'];
 										$kode = htmlspecialchars($row['kode_bank']);
 										$nama = htmlspecialchars($row['nama_bank']);
 										$dealer_utama = $row['isdealerutama'];
+										$bank_besar = $row['isbankbesar'];
 										?>
 										<tr>
 											<td>
@@ -159,14 +161,34 @@ $totalDealerUtama = $row['total'];
 											<td><?= $kode ?></td>
 											<td><?= $nama ?></td>
 											<td>
-												<?php if ($dealer_utama == 1): ?>
-													<span class="badge badge-success d-inline-flex align-items-center badge-xs">
+												<?php if (is_null($dealer_utama)): ?>
+													<span class="badge badge-dark d-inline-flex align-items-center badge-xs">
+														N/A
+													</span>
+												<?php elseif ((int) $dealer_utama === 1): ?>
+													<span
+														class="badge badge-success d-inline-flex align-items-center badge-xs">
 														Dealer Utama
 													</span>
-												<?php else: ?>
-													<span
-														class="badge badge-secondary d-inline-flex align-items-center badge-xs">
+												<?php elseif ((int) $dealer_utama === 0): ?>
+													<span class="badge badge-secondary d-inline-flex align-items-center badge-xs">
 														Non Dealer Utama
+													</span>
+												<?php endif; ?>
+											</td>
+											<td>
+												<?php if (is_null($bank_besar)): ?>
+													<span class="badge badge-dark d-inline-flex align-items-center badge-xs">
+														N/A
+													</span>
+												<?php elseif ((int) $bank_besar === 1): ?>
+													<span
+														class="badge badge-success d-inline-flex align-items-center badge-xs">
+														Bank Besar
+													</span>
+												<?php elseif ((int) $bank_besar === 0): ?>
+													<span class="badge badge-secondary d-inline-flex align-items-center badge-xs">
+														Non Bank Besar
 													</span>
 												<?php endif; ?>
 											</td>
@@ -176,9 +198,13 @@ $totalDealerUtama = $row['total'];
 														data-bs-target="#edit_assets<?= $kode ?>">
 														<i class="ti ti-edit"></i>
 													</a>
-													<a href="#" class="btn-delete" data-bs-toggle="modal"
+													<a href="#" class="btn-delete me-2" data-bs-toggle="modal"
 														data-bs-target="#delete_modal" data-kode="<?= $kode ?>">
 														<i class="ti ti-trash"></i>
+													</a>
+													<a href="#" class="btn-delete" data-bs-toggle="modal"
+														data-bs-target="#delete_modal" data-kode="<?= $kode ?>">
+														<i class="ti ti-info-circle"></i>
 													</a>
 												</div>
 											</td>
@@ -289,6 +315,16 @@ $totalDealerUtama = $row['total'];
 									<div class="mb-3">
 										<label class="form-label">Dealer Utama</label>
 										<select class="form-select" name="dealer_utama" required>
+											<option value="NULL">Pilih</option>
+											<option value="1">Ya</option>
+											<option value="0">Tidak</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="mb-3">
+										<label class="form-label">Bank Besar</label>
+										<select class="form-select" name="bank_besar" required>
 											<option value="">Pilih</option>
 											<option value="1">Ya</option>
 											<option value="0">Tidak</option>
